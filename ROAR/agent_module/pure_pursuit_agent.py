@@ -13,7 +13,7 @@ from ROAR.configurations.configuration import Configuration as AgentConfig
 
 
 class PurePursuitAgent(Agent):
-    def __init__(self, vehicle: Vehicle, agent_settings: AgentConfig, target_speed=50):
+    def __init__(self, vehicle: Vehicle, agent_settings: AgentConfig, target_speed=100):
         super().__init__(vehicle=vehicle, agent_settings=agent_settings)
         self.route_file_path = Path(self.agent_settings.waypoint_file_path)
         self.pure_pursuit_controller = \

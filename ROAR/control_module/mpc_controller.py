@@ -48,8 +48,12 @@ class VehicleMPCController(Controller):
         self.track_DF = pd.read_csv(route_file_path, header=None)
         # Fit the route to a curve
         spline_points = 10000
-        self.pts_2D = self.track_DF.loc[:, [0, 1]].values
-        tck, u = splprep(self.pts_2D.T, u=None, s=2.0, per=1, k=3)
+        self.pts_2D = self.track_DF.loc[:, [0, 1]].values.T
+        xp, yp = self.pts_2D[0], self.pts_2D[1]
+        okay = np.where(np.abs(np.diff(xp)) + np.abs(np.diff(yp)) > 0)
+        xp = np.r_[xp[okay], xp[-1]]
+        yp = np.r_[yp[okay], yp[-1]]
+        tck, u = splprep([xp, yp], s=2.0, per=1, k=3)
         u_new = np.linspace(u.min(), u.max(), spline_points)
         x_new, y_new = splev(u_new, tck, der=0)
         self.pts_2D = np.c_[x_new, y_new]

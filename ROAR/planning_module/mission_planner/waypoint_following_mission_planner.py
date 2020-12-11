@@ -7,6 +7,7 @@ from typing import List, Optional
 from ROAR.utilities_module.data_structures_models import Transform, Location,Rotation
 from collections import deque
 from ROAR.agent_module.agent import Agent
+from scipy.ndimage import gaussian_filter1d
 
 
 class WaypointFollowingMissionPlanner(MissionPlanner):
@@ -60,6 +61,9 @@ class WaypointFollowingMissionPlanner(MissionPlanner):
         with open(self.file_path.as_posix(), "r") as f:
             for line in f:
                 result.append(self._read_line(line=line))
+        t1 = [list(i) for i in zip(*result)]
+        t2 = [list(gaussian_filter1d(x, 10)) for x in t1]
+        result = [list(i) for i in zip(*t2)]
         return result
 
     def _raw_coord_to_transform(self, raw: List[float]) -> Optional[Transform]:

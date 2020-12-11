@@ -11,7 +11,7 @@ import logging
 
 
 class PIDAgent(Agent):
-    def __init__(self, target_speed=40, **kwargs):
+    def __init__(self, target_speed=80, **kwargs):
         super().__init__(**kwargs)
         self.target_speed = target_speed
         self.logger = logging.getLogger("PID Agent")
